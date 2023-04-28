@@ -10,7 +10,7 @@ gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 blr = cv2.GaussianBlur(gray, (5, 5), 0)
 
 #cv2.imshow("blur", blr)
-cv2.imshow("noblur", gray)
+#cv2.imshow("noblur", gray)
 
 # Apply threshold
 thr = cv2.adaptiveThreshold(blr, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 65, 17) #  IGRATI SE S ZADNJE DVIJE VRIJEDNOSTI

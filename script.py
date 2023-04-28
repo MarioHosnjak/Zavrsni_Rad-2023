@@ -23,9 +23,6 @@ def mouse_events(event, x, y, flags, param):
         gray16_frame = cv2.imread("./thermal_pics/sampletiff.tiff", cv2.IMREAD_ANYDEPTH)
         cv2.imshow('gray8', gray16_frame)
         cv2.setMouseCallback('gray8', mouse_events)
-                
-        # open the gray16 frame
-        gray16_frame = cv2.imread("./thermal_pics/sampletiff.tiff", cv2.IMREAD_ANYDEPTH)
 
         # calculate temperature
         temperature_pointer = gray16_frame[y_mouse, x_mouse]
@@ -51,9 +48,6 @@ def mouse_events(event, x, y, flags, param):
 gray16_frame = cv2.imread("./thermal_pics/sampletiff.tiff", cv2.IMREAD_ANYDEPTH)
 cv2.imshow('gray8', gray16_frame)
 cv2.setMouseCallback('gray8', mouse_events)
-        
-# open the gray16 frame
-gray16_frame = cv2.imread("./thermal_pics/sampletiff.tiff", cv2.IMREAD_ANYDEPTH)
 
 # calculate temperature
 temperature_pointer = gray16_frame[y_mouse, x_mouse]
