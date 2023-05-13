@@ -107,7 +107,7 @@ for cnt in contours:
 				cv2.putText(img, f'Square {n}', (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 0), 2)
 			else:
 				cv2.putText(img, f'Rectangle {n}', (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 0), 2)
-				img = cv2.drawContours(img, [cnt], -1, (255,255,0), 3)
+				img  = cv2.drawContours(img, [cnt], -1, (255,255,0), 3)
 			# READ TEMPERATURE
 			print(f"Object: {n}")
 			xt, yt, wt, ht = cv2.boundingRect(cnt)
