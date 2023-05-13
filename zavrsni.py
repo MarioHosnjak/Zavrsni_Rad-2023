@@ -38,7 +38,7 @@ for cnt in contours:
                     maxTemp = [temperature_pointer, i, j]
                 #print(f"Pixel coordinates: ({i}, {j}) Temp: {temperature_pointer}")
                 #cv2.circle(img, (i, j), 1, (255, 255, 255), -1)
-        print(f"Max temp for object {n} is {maxTemp[0]} x={maxTemp[1]} y={maxTemp[2]}")
+        print(f"Max temp for object {n} is {maxTemp[0]}°C x={maxTemp[1]} y={maxTemp[2]}")
         cv2.circle(img, (maxTemp[1], maxTemp[2]), 5, (255, 255, 255), -1)
 
 cv2.imshow("Shapes", img)
