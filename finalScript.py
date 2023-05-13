@@ -9,7 +9,7 @@ import adafruit_mlx90640
 FILENAME = "mlx.jpg"
 
 MINTEMP = 25.0  # low range of the sensor (deg C)
-MAXTEMP = 70.0  # high range of the sensor (deg C)
+MAXTEMP = 35.0  # high range of the sensor (deg C)
 COLORDEPTH = 1000  # how many color values we can have
 INTERPOLATE = 10  # scale factor for final image
 
@@ -62,6 +62,15 @@ while not success:
 		continue
 # create the image
 pixels = [0] * 768
+MINTEMP = frame[0]
+MAXTEMP = frame[0]
+for temp in frame:
+	if temp > MAXTEMP:
+		MAXTEMP = temp
+	if temp < MINTEMP:
+		MINTEMP = temp
+print("Mintemp = ", MINTEMP)
+print("Maxtemp = ", MAXTEMP)
 for i, pixel in enumerate(frame):
     coloridx = map_value(pixel, MINTEMP, MAXTEMP, 0, COLORDEPTH - 1)
     coloridx = int(constrain(coloridx, 0, COLORDEPTH - 1))
@@ -71,15 +80,18 @@ img = Image.new("RGB", (32, 24))
 img.putdata(pixels)
 img = img.transpose(Image.FLIP_TOP_BOTTOM)
 img = img.resize((32 * INTERPOLATE, 24 * INTERPOLATE), Image.BICUBIC)
-#img.save("ir.jpg")
+img.save("ir.jpg")
 img.show()
 
 ############################################################################
 
+img = cv2.imread('./ir.jpg')
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 blr = cv2.GaussianBlur(gray, (5, 5), 0)
 thr = cv2.adaptiveThreshold(blr, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 65, 17)
 contours,hierarchy = cv2.findContours(thr, 1, 2)
+
+#cv2.imshow("Thr", thr)
 
 n = 0
 for cnt in contours:
@@ -87,7 +99,7 @@ for cnt in contours:
    approx = cv2.approxPolyDP(cnt, 0.05*cv2.arcLength(cnt, True), True)
    if len(approx) == 4:
       x, y, w, h = cv2.boundingRect(cnt)
-      if w >= 40 and w < img.shape[1] and h < img.shape[0]:
+      if w >= 4: # and w < img.shape[1] and h < img.shape[0]:
         ratio = float(w)/h
         n = n+1
         if ratio >= 0.85 and ratio <= 1.15:
