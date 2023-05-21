@@ -8,8 +8,9 @@ import adafruit_mlx90640
 
 FILENAME = "mlx.jpg"
 
-MINTEMP = 25.0  # low range of the sensor (deg C)
-MAXTEMP = 35.0  # high range of the sensor (deg C)
+fixedMinMax = False
+MINTEMP = 0.0  # low range of the sensor (deg C)
+MAXTEMP = 100.0 # high range of the sensor (deg C)
 COLORDEPTH = 1000  # how many color values we can have
 INTERPOLATE = 10  # scale factor for final image
 
@@ -62,13 +63,14 @@ while not success:
 		continue
 # create the image
 pixels = [0] * 768
-MINTEMP = frame[0]
-MAXTEMP = frame[0]
-for temp in frame:
-	if temp > MAXTEMP:
-		MAXTEMP = temp
-	if temp < MINTEMP:
-		MINTEMP = temp
+if fixedMinMax == False:
+	MINTEMP = frame[0]
+	MAXTEMP = frame[0]
+	for temp in frame:
+		if temp > MAXTEMP:
+			MAXTEMP = temp
+		if temp < MINTEMP:
+			MINTEMP = temp
 print("Mintemp = ", MINTEMP)
 print("Maxtemp = ", MAXTEMP)
 for i, pixel in enumerate(frame):
