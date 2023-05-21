@@ -8,6 +8,8 @@ import adafruit_mlx90640
 
 FILENAME = "mlx.jpg"
 
+# if False -> MINTEMP = min temp., MAXTEMP = max temp, 
+# if True -> MINTEMP = 0, MAXTEMP = 100
 fixedMinMax = False
 MINTEMP = 0.0  # low range of the sensor (deg C)
 MAXTEMP = 100.0 # high range of the sensor (deg C)
