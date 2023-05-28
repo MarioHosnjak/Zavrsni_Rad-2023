@@ -110,6 +110,11 @@ try:
         cv2.imshow('Video', image)
         cv2.waitKey(1)
 except KeyboardInterrupt:
+    with open("data.csv", "w", newline="")as file:
+        writer = csv.writer(file)
+        writer.writerow(["Temperature"])
+        for value in temp_list:
+            writer.writerow([value])
     #Create x-axis values
     x_values = range(len(temp_list))
     x_values = list(x_values)
