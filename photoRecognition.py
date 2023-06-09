@@ -6,8 +6,6 @@ from PIL import Image
 import board
 import adafruit_mlx90640
 
-FILENAME = "mlx.jpg"
-
 # if False -> MINTEMP = min temp., MAXTEMP = max temp, 
 # if True -> MINTEMP = 0, MAXTEMP = 100
 fixedMinMax = False
@@ -31,7 +29,7 @@ heatmap = (
 
 colormap = [0] * COLORDEPTH
 
-# some utility functions
+# utility functions
 def constrain(val, min_val, max_val):
     return min(max_val, max(min_val, val))
 
@@ -79,7 +77,7 @@ for i, pixel in enumerate(frame):
     coloridx = map_value(pixel, MINTEMP, MAXTEMP, 0, COLORDEPTH - 1)
     coloridx = int(constrain(coloridx, 0, COLORDEPTH - 1))
     pixels[i] = colormap[coloridx]
-# save to file
+# create image and save to file
 img = Image.new("RGB", (32, 24))
 img.putdata(pixels)
 img = img.transpose(Image.FLIP_TOP_BOTTOM)
@@ -88,14 +86,14 @@ img.save("ir.jpg")
 img.show()
 
 ############################################################################
+# Object recognition
 
 img = cv2.imread('./ir.jpg')
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 blr = cv2.GaussianBlur(gray, (5, 5), 0)
 thr = cv2.adaptiveThreshold(blr, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 65, 17)
-contours,hierarchy = cv2.findContours(thr, 1, 2)
-
 #cv2.imshow("Thr", thr)
+contours,hierarchy = cv2.findContours(thr, 1, 2)
 
 n = 0
 for cnt in contours:
