@@ -8,9 +8,6 @@ import adafruit_mlx90640
 import sys
 import matplotlib.pyplot as plt
 import csv
-#from io import BytesIO
-
-FILENAME = "mlx.jpg"
 
 # if False -> MINTEMP = min temp., MAXTEMP = max temp, 
 # if True -> MINTEMP = 0, MAXTEMP = 100
@@ -23,7 +20,6 @@ INTERPOLATE = 10  # scale factor for final image
 mlx = adafruit_mlx90640.MLX90640(board.I2C())
 
 mlx.refresh_rate = 5
-#mlx.refresh_rate = adafruit_mlx90640.RefreshRate.REFRESH_16_HZ
 print(f"Refresh rate = {mlx.refresh_rate}")
 
 # the list of colors we can choose from
@@ -39,7 +35,7 @@ heatmap = (
 
 colormap = [0] * COLORDEPTH
 
-# some utility functions
+# utility functions
 def constrain(val, min_val, max_val):
     return min(max_val, max(min_val, val))
 
@@ -67,7 +63,6 @@ try:
     time = 0
     temp_list = []
     time_list = []
-    #plt.ion()
     fig, ax = plt.subplots()
     while True:
         # get sensor data
@@ -91,7 +86,6 @@ try:
         if fixedMinMax == False:
             MIN_MAP_TEMP = MINTEMP
             MAX_MAP_TEMP = MAXTEMP
-        #print("Mintemp = ", MINTEMP)
         print("Maxtemp = ", MAXTEMP)
         if counter % 5 == 0:
             temp_list.append(MAXTEMP)
@@ -109,31 +103,13 @@ try:
             coloridx = map_value(pixel, MIN_MAP_TEMP, MAX_MAP_TEMP, 0, COLORDEPTH - 1)
             coloridx = int(constrain(coloridx, 0, COLORDEPTH - 1))
             pixels[i] = colormap[coloridx]
-        # save to file
         img = Image.new("RGB", (32, 24))
         img.putdata(pixels)
         img = img.transpose(Image.FLIP_TOP_BOTTOM)
         img = img.resize((32 * INTERPOLATE, 24 * INTERPOLATE), Image.BICUBIC)
-        #img.save("ir.jpg")
-        
         image = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-        #retval, buffer = cv2.imencode('.jpg', image)
-        #jpgImg = np.array(buffer).tobytes()
         
         cv2.imshow('Video', image)
         cv2.waitKey(1)
 except KeyboardInterrupt:
-    print("Interrupted")
-    #Create a figure and axes
-    #fig2, ax2 = plt.subplots()
-    #Plot the line graph
-    #print(temp_list)
-    #print(time_list)
-    #ax.plot(time_list, temp_list, marker='o')
-    #Set lavels and title
-    #ax.set_xlabel('Time (s)')
-    #ax.set_ylabel('Temperature (°C)')
-    #ax.set_title('Maximum temperature')
-    #Display the graph
     plt.show()
-    print("bye")
